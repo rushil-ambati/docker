@@ -13,7 +13,11 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Export GitHub secrets to environment variables
+      - name: Export GitHub variables to shell environment variables
+        uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(vars) }}
+      - name: Export GitHub secrets to shell environment variables
         uses: oNaiPs/secrets-to-env-action@v1
         with:
           secrets: ${{ toJSON(secrets) }}

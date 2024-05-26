@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  portainer-ce:
+  portainer:
     container_name: portainer
 
     image: portainer/portainer-ce:latest
@@ -9,12 +9,15 @@ services:
     restart: always
 
     ports:
-      - 8000:8000
       - 9443:9443
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
+
+    # labels:
+    #   traefik.http.routers.portainer.rule: Host(`${PORTAINER_DOMAIN}`)
+    #   traefik.http.services.portainer.loadbalancer.server.port: 9000
 
 volumes:
   portainer_data:

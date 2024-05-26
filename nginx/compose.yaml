@@ -1,13 +1,20 @@
----
-version: "3.8"
+version: "3"
+
 services:
   nginx:
     container_name: nginx
+
     image: nginx
+
     networks:
       - cf-tunnel
+
     environment:
       - NGINX_HOST=${NGINX_HOST}
+
+    labels:
+      - "traefik.http.routers.nginx.rule=Host(`test.vm-docker.home.rushil.uk`)"
+
 networks:
   cf-tunnel:
     external: true

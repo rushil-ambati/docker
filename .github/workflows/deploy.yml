@@ -40,16 +40,16 @@ jobs:
 
       - name: List all changed directories
         env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          ALL_CHANGED_DIRS: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          for file in ${ALL_CHANGED_FILES}; do
+          for dir in ${ALL_CHANGED_DIRS}; do
             echo "$file was changed"
           done
 
       - name: List all deleted directories
         env:
-          ALL_DELETED_FILES: ${{ steps.changed-files.outputs.all_deleted_files }}
+          ALL_DELETED_DIRS: ${{ steps.changed-files.outputs.deleted_files }}
         run: |
-          for file in ${ALL_DELETED_FILES}; do
+          for file in ${ALL_DELETED_DIRS}; do
             echo "$file was deleted"
           done

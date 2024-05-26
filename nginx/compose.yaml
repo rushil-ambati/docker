@@ -6,8 +6,8 @@ services:
     image: nginx
     networks:
       - cf-tunnel
-    env_file:
-      - .env
+    environment:
+      - NGINX_HOST=${NGINX_HOST}
 networks:
   cf-tunnel:
     external: true

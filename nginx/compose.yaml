@@ -8,8 +8,6 @@ services:
       - cf-tunnel
     env_file:
       - .env
-    labels:
-      com.centurylinklabs.watchtower.enable: true
 networks:
   cf-tunnel:
     external: true

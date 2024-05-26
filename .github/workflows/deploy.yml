@@ -24,22 +24,32 @@ jobs:
         with:
           secrets: ${{ toJSON(secrets) }}
 
-      - name: Get changed files
+      - name: Get changed directories
         id: changed-files
         uses: tj-actions/changed-files@v44
         with:
           files_ignore: |-
             .github/**
             .vscode/**
+            .gitignore
             README.md
           dir_names: true
+          dir_names_deleted_files_include_only_deleted_dirs: true
           dir_names_exclude_current_dir: true
           dir_names_max_depth: 1
 
-      - name: List all changed files
+      - name: List all changed directories
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           for file in ${ALL_CHANGED_FILES}; do
             echo "$file was changed"
+          done
+
+      - name: List all deleted directories
+        env:
+          ALL_DELETED_FILES: ${{ steps.changed-files.outputs.all_deleted_files }}
+        run: |
+          for file in ${ALL_DELETED_FILES}; do
+            echo "$file was deleted"
           done

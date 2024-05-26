@@ -13,14 +13,33 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
+
       - name: Export GitHub variables to shell environment variables
         uses: oNaiPs/secrets-to-env-action@v1
         with:
           secrets: ${{ toJSON(vars) }}
+
       - name: Export GitHub secrets to shell environment variables
         uses: oNaiPs/secrets-to-env-action@v1
         with:
           secrets: ${{ toJSON(secrets) }}
-      - run: echo "CLOUDFLARED_TUNNEL_TOKEN=$CLOUDFLARED_TUNNEL_TOKEN"
-      - run: echo "NGINX_HOST=$NGINX_HOST"
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files_ignore: |-
+            .github/**
+            .vscode/**
+            README.md
+          dir_names: true
+          dir_names_exclude_current_dir: true
+          dir_names_max_depth: 1
+
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
+          done

@@ -43,13 +43,17 @@ jobs:
           ALL_CHANGED_DIRS: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           for dir in ${ALL_CHANGED_DIRS}; do
-            echo "$file was changed"
+            echo "$dir was changed, redeploying..."
+            pushd $dir
+            docker-compose up -d
+            popd
           done
 
       - name: List all deleted directories
         env:
           ALL_DELETED_DIRS: ${{ steps.changed-files.outputs.deleted_files }}
         run: |
-          for file in ${ALL_DELETED_DIRS}; do
-            echo "$file was deleted"
+          for dir in ${ALL_DELETED_DIRS}; do
+            echo "$dir was deleted, removing..."
+            echo "NOT IMPLEMENTED YET!"
           done

@@ -13,7 +13,7 @@ services:
       - NGINX_HOST=${NGINX_HOST}
 
     labels:
-      - "traefik.http.routers.nginx.rule=Host(`test.vm-docker.home.rushil.uk`)"
+      - "traefik.http.routers.nginx.rule=Host(`${NGINX_HOST}`)"
 
 networks:
   cf-tunnel:

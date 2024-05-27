@@ -55,6 +55,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.authentik.rule: Host(`auth.$DOMAIN`)
+      traefik.http.routers.authentik.entrypoints: web
       traefik.docker.network: cf-tunnel
   worker:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.4.2}

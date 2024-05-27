@@ -91,6 +91,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.whoami.rule: Host(`whoami.$DOMAIN`)
+      traefik.http.routers.whoami.entrypoints: web
       traefik.docker.network: cf-tunnel
     restart: unless-stopped
 

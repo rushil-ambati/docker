@@ -50,6 +50,8 @@ services:
     depends_on:
       - postgresql
       - redis
+    labels:
+      - "traefik.http.routers.nginx.rule=Host(`${AUTHENTIK_DOMAIN}`)"
   worker:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.4.2}
     restart: unless-stopped

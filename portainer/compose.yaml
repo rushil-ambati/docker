@@ -21,3 +21,4 @@ services:
 
 volumes:
   portainer_data:
+    external: true # manually run `docker volume create portainer_data`

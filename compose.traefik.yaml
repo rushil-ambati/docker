@@ -21,6 +21,9 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /data/traefik/traefik.yml:/traefik.yml:ro
+      - /data/traefik/config.yml:/config.yml:ro
+      - /data/traefik/acme.json:/acme.json
 
 networks:
   cf-tunnel:

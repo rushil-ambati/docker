@@ -21,7 +21,6 @@ services:
 
     labels:
       traefik.enable: false
-      com.centurylinklabs.watchtower.enable: true
 
 networks:
   cf-tunnel:

@@ -1,3 +1,8 @@
+# export COMPOSE_PROJECT_NAME=portainer
+# export PORTAINER_DOMAIN=portainer.example.com
+# docker volume create portainer_data
+# docker-compose -f compose.portainer.yaml up -d
+
 version: "3"
 
 services:
@@ -9,7 +14,7 @@ services:
     restart: always
 
     ports:
-      - 9443:9443
+      - 9443:9443 # TODO: remove
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -21,4 +26,4 @@ services:
 
 volumes:
   portainer_data:
-    external: true # manually run `docker volume create portainer_data`
+    external: true

@@ -86,6 +86,14 @@ services:
       - postgresql
       - redis
 
+  whoami:
+    image: containous/whoami
+    labels:
+      traefik.enable: true
+      traefik.http.routers.whoami.rule: Host(`whoami.$DOMAIN`)
+      traefik.docker.network: cf-tunnel
+    restart: unless-stopped
+
 networks:
   cf-tunnel:
     external: true

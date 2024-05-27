@@ -29,7 +29,8 @@ services:
       timeout: 3s
     volumes:
       - /data/authentik/redis:/data
-  server:
+  authentik:
+    container_name: authentik
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.4.2}
     restart: unless-stopped
     command: server
@@ -51,7 +52,8 @@ services:
       - postgresql
       - redis
     labels:
-      - "traefik.http.routers.nginx.rule=Host(`${AUTHENTIK_DOMAIN}`)"
+      traefik.http.routers.authentik.rule: Host(`${AUTHENTIK_DOMAIN}`)
+      traefik.http.services.authentik.loadbalancer.server.port: 9000
   worker:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.4.2}
     restart: unless-stopped

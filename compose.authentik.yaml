@@ -88,6 +88,8 @@ services:
 
   whoami:
     image: containous/whoami
+    networks:
+      - cf-tunnel
     labels:
       traefik.enable: true
       traefik.http.routers.whoami.rule: Host(`whoami.$DOMAIN`)

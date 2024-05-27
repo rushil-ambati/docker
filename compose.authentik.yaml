@@ -53,6 +53,7 @@ services:
       - postgresql
       - redis
     labels:
+      traefik.enable: true
       traefik.http.routers.authentik.rule: Host(`auth.$DOMAIN`)
       traefik.docker.network: cf-tunnel
   worker:

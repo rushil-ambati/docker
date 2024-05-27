@@ -21,6 +21,7 @@ services:
       - portainer_data:/data
 
     # labels:
+    #   traefik.enable: true
     #   traefik.http.routers.portainer.rule: Host(`${PORTAINER_DOMAIN}`)
     #   traefik.http.services.portainer.loadbalancer.server.port: 9000
 

@@ -13,6 +13,7 @@ services:
       - NGINX_HOST=${NGINX_HOST}
 
     labels:
+      traefik.enable: true
       traefik.http.routers.nginx.rule: Host(`test.$DOMAIN`)
 
 networks:

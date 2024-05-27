@@ -39,8 +39,8 @@ services:
       AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
       AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
       AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
-    expose:
-      - 9000
+    ports:
+      - 9000:9000
     volumes:
       - /data/authentik/media:/media
       - /data/authentik/custom-templates:/templates

@@ -25,6 +25,12 @@ services:
       - /data/traefik/config.yml:/config.yml:ro
       - /data/traefik/acme.json:/acme.json
 
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.traefik.rule: Host(`traefik.home.$DOMAIN`)
+      traefik.http.routers.traefik.entrypoints: web
+      traefik.http.routers.traefik.service: api@internal
+
 networks:
   cf-tunnel:
     external: true

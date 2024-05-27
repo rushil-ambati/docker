@@ -19,6 +19,9 @@ services:
       - "80:80"
       - "8080:8080" # Web UI - disable after testing
 
+    env_file:
+      - stack.env
+
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /data/traefik/traefik.yml:/traefik.yml:ro

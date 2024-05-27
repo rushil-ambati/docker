@@ -45,6 +45,7 @@ services:
     env_file:
       - stack.env
     networks:
+      - default
       - cf-tunnel
     depends_on:
       - postgresql

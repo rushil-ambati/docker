@@ -44,9 +44,8 @@ services:
       - ./custom-templates:/templates
     env_file:
       - .env
-    ports:
-      - "${COMPOSE_PORT_HTTP:-9000}:9000"
-      - "${COMPOSE_PORT_HTTPS:-9443}:9443"
+    networks:
+      - cf-tunnel
     depends_on:
       - postgresql
       - redis
@@ -85,3 +84,7 @@ volumes:
     driver: local
   redis:
     driver: local
+
+networks:
+  cf-tunnel:
+    external: true

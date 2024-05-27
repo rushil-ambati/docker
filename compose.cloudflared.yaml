@@ -17,7 +17,7 @@ services:
       - run
 
     environment:
-      - TUNNEL_TOKEN=${CLOUDFLARED_TUNNEL_TOKEN}
+      TUNNEL_TOKEN: ${CLOUDFLARED_TUNNEL_TOKEN}
 
     labels:
       traefik.enable: false

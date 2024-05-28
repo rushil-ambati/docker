@@ -54,8 +54,8 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.authentik.rule: Host(`auth.$DOMAIN`)
-      traefik.http.routers.authentik.entrypoints: websecure
-      traefik.http.services.authentik.loadbalancer.server.port: 9443
+      traefik.http.routers.authentik.entrypoints: web
+      traefik.http.services.authentik.loadbalancer.server.port: 9000
   worker:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.4.2}
     restart: unless-stopped

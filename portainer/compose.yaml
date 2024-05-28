@@ -1,8 +1,3 @@
-# export COMPOSE_PROJECT_NAME=portainer
-# export DOMAIN=example.com
-# docker volume create portainer_data
-# docker-compose -f compose.portainer.yaml up -d
-
 version: "3"
 
 services:
@@ -18,19 +13,15 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - portainer_data:/data
+      - ./data/portainer:/data
 
     labels:
       traefik.enable: true
       traefik.http.routers.portainer.middlewares: redirect-https@file
-      traefik.http.routers.portainer.rule: Host(`portainer.home.$DOMAIN`)
+      traefik.http.routers.portainer.rule: Host(`$PORTAINER_DOMAIN`)
       traefik.http.routers.portainer.entrypoints: websecure
       traefik.http.routers.portainer.tls: true
       traefik.http.services.portainer.loadbalancer.server.port: 9000
-
-volumes:
-  portainer_data:
-    external: true
 
 networks:
   proxy:

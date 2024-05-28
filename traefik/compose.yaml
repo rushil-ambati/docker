@@ -18,28 +18,25 @@ services:
       - 80:80
       - 443:443
 
-    env_file:
-      - stack.env
-
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /data/traefik/traefik.yml:/traefik.yml:ro
-      - /data/traefik/config.yml:/config.yml:ro
-      - /data/traefik/acme.json:/acme.json
+      - ./data/traefik.yml:/traefik.yml:ro
+      - ./data/config.yml:/config.yml:ro
+      - ./data/acme.json:/acme.json
 
     labels:
       traefik.enable: true
       traefik.http.routers.traefik.entrypoints: web
-      traefik.http.routers.traefik.rule: Host(`traefik.home.$DOMAIN`)
+      traefik.http.routers.traefik.rule: Host(`$TRAEFIK_DASHBOARD_DOMAIN`)
       traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme: https
       traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto: https
       traefik.http.routers.traefik.middlewares: traefik-https-redirect
       traefik.http.routers.traefik-secure.entrypoints: websecure
-      traefik.http.routers.traefik-secure.rule: Host(`traefik.home.$DOMAIN`)
+      traefik.http.routers.traefik-secure.rule: Host(`$TRAEFIK_DASHBOARD_DOMAIN`)
       traefik.http.routers.traefik-secure.tls: true
       traefik.http.routers.traefik-secure.tls.certresolver: letsencrypt
-      traefik.http.routers.traefik-secure.tls.domains[0].main: home.$DOMAIN
-      traefik.http.routers.traefik-secure.tls.domains[0].sans: "*.home.$DOMAIN"
+      traefik.http.routers.traefik-secure.tls.domains[0].main: $SUBDOMAIN.$DOMAIN
+      traefik.http.routers.traefik-secure.tls.domains[0].sans: "*.$SUBDOMAIN.$DOMAIN"
       traefik.http.routers.traefik-secure.service: api@internal
 
 networks:

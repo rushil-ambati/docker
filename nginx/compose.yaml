@@ -10,11 +10,11 @@ services:
       - proxy
 
     environment:
-      - NGINX_HOST=${NGINX_HOST}
+      - NGINX_HOST=${NGINX_DOMAIN}
 
     labels:
       traefik.enable: true
-      traefik.http.routers.nginx.rule: Host(`test.$DOMAIN`)
+      traefik.http.routers.nginx.rule: Host(`$NGINX_DOMAIN`)
       traefik.http.routers.nginx.entrypoints: web
 
 networks:

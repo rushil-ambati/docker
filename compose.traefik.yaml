@@ -41,7 +41,7 @@ services:
       traefik.http.routers.traefik-secure.tls.certresolver: letsencrypt
       traefik.http.routers.traefik-secure.tls.domains[0].main: home.$DOMAIN
       traefik.http.routers.traefik-secure.tls.domains[0].sans: "*.home.$DOMAIN"
-      traefik.http.routers.traefik.service: api@internal
+      traefik.http.routers.traefik-secure.service: api@internal
 
 networks:
   cf-tunnel:

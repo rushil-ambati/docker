@@ -40,8 +40,6 @@ services:
       AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
       AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
       AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
-    expose:
-      - 9000
     volumes:
       - /data/authentik/media:/media
       - /data/authentik/custom-templates:/templates
@@ -56,7 +54,8 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.authentik.rule: Host(`auth.$DOMAIN`)
-      traefik.http.routers.authentik.entrypoints: web
+      traefik.http.routers.authentik.entrypoints: websecure
+      traefik.http.services.authentik.loadbalancer.server.port: 9000
   worker:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.4.2}
     restart: unless-stopped

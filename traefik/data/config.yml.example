@@ -4,7 +4,7 @@ http:
       entryPoints:
         - web
         - websecure
-      rule: Host(`external-service.home.example.com`)
+      rule: Host(`external-service.local.example.com`)
       middlewares:
         - secured
       tls: {}

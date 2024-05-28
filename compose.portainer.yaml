@@ -22,7 +22,7 @@ services:
 
     labels:
       traefik.enable: true
-      traefik.http.routers.portainer.middlewares: https-redirectscheme@file
+      traefik.http.routers.portainer.middlewares: redirect-https@file
       traefik.http.routers.portainer.rule: Host(`portainer.home.$DOMAIN`)
       traefik.http.routers.portainer.entrypoints: websecure
       traefik.http.routers.portainer.tls: true

@@ -8,6 +8,9 @@ services:
 
     restart: unless-stopped
 
+    security_opt:
+      - no-new-privileges:true
+
     networks:
       - cf-tunnel
 
@@ -16,8 +19,9 @@ services:
       - --providers.docker
 
     ports:
-      - "80:80"
-      - "8080:8080" # Web UI - disable after testing
+      - 80:80
+      - 443:443
+      - 8080:8080 # Web UI - disable after testing
 
     env_file:
       - stack.env

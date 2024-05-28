@@ -13,7 +13,7 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./data/portainer:/data
+      - ./data:/data
 
     labels:
       traefik.enable: true

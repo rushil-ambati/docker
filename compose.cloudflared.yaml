@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
 
     networks:
-      - cf-tunnel
+      - proxy
 
     command:
       - tunnel
@@ -20,5 +20,5 @@ services:
       TUNNEL_TOKEN: ${CLOUDFLARED_TUNNEL_TOKEN}
 
 networks:
-  cf-tunnel:
-    name: cf-tunnel
+  proxy:
+    name: proxy

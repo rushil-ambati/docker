@@ -7,7 +7,7 @@ services:
     image: nginx
 
     networks:
-      - cf-tunnel
+      - proxy
 
     environment:
       - NGINX_HOST=${NGINX_HOST}
@@ -18,5 +18,5 @@ services:
       traefik.http.routers.nginx.entrypoints: web
 
 networks:
-  cf-tunnel:
+  proxy:
     external: true

@@ -12,7 +12,7 @@ services:
       - no-new-privileges:true
 
     networks:
-      - cf-tunnel
+      - proxy
 
     ports:
       - 80:80
@@ -44,5 +44,5 @@ services:
       traefik.http.routers.traefik-secure.service: api@internal
 
 networks:
-  cf-tunnel:
+  proxy:
     external: true

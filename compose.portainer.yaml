@@ -1,5 +1,5 @@
 # export COMPOSE_PROJECT_NAME=portainer
-# export PORTAINER_DOMAIN=portainer.example.com
+# export DOMAIN=example.com
 # docker volume create portainer_data
 # docker-compose -f compose.portainer.yaml up -d
 
@@ -19,7 +19,7 @@ services:
 
     labels:
       traefik.enable: true
-      traefik.http.routers.portainer.rule: Host(`portainer.$DOMAIN`)
+      traefik.http.routers.portainer.rule: Host(`portainer.home.$DOMAIN`)
       traefik.http.routers.portainer.entrypoints: websecure
       traefik.http.routers.portainer.tls: true
       traefik.http.services.portainer.loadbalancer.server.port: 9000

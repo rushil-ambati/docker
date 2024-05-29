@@ -1,0 +1,62 @@
+version: "3.4"
+services:
+  broker:
+    image: redis:6.0
+    container_name: paperless-broker
+    restart: unless-stopped
+
+  db:
+    image: postgres:13
+    container_name: paperless-postgres
+    restart: unless-stopped
+    volumes:
+      - ./data/pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless
+
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker
+    networks:
+      - default
+      - proxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./data/data:/usr/src/paperless/data
+      - ./data/media:/usr/src/paperless/media
+      - ./data/export:/usr/src/paperless/export
+      - ./data/consume:/usr/src/paperless/consume
+    env_file:
+      - .env
+    environment:
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBHOST: db
+      USERMAP_UID: 1000
+      USERMAP_GID: 1000
+      PAPERLESS_OCR_LANGUAGE: eng
+      PAPERLESS_URL: "https://${PAPERLESS_DOMAIN}"
+      PAPERLESS_ALLOWED_HOSTS: "${PAPERLESS_DOMAIN},localhost"
+      PAPERLESS_DISABLE_REGULAR_LOGIN: ${PAPERLESS_DISABLE_REGULAR_LOGIN}
+      PAPERLESS_APPS: ${PAPERLESS_APPS}
+      PAPERLESS_SOCIALACCOUNT_PROVIDERS: ${PAPERLESS_SOCIALACCOUNT_PROVIDERS}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.paperless.middlewares: redirect-https@file
+      traefik.http.routers.paperless.rule: Host(`$PAPERLESS_DOMAIN`)
+      traefik.http.routers.paperless.entrypoints: websecure
+      traefik.http.routers.paperless.tls: true
+      traefik.http.services.paperless.loadbalancer.server.port: 8000
+
+networks:
+  proxy:
+    external: true

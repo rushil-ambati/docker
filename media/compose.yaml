@@ -133,7 +133,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.nginx.rule: Host(`$OVERSEERR_DOMAIN`)
-      traefik.http.routers.nginx.entrypoints: web
+      traefik.http.routers.nginx.entrypoints: websecure
       traefik.http.services.nginx.loadbalancer.server.port: 5055
 
 networks:

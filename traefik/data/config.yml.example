@@ -2,12 +2,8 @@ http:
   routers:
     proxmox:
       entryPoints:
-        - web
         - websecure
       rule: Host(`external-service.local.example.com`)
-      middlewares:
-        - secured
-      tls: {}
       service: external-service
 
   services:

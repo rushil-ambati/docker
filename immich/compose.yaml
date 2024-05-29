@@ -26,7 +26,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.immich.rule: Host(`$IMMICH_DOMAIN`)
-      traefik.http.routers.immich.entrypoints: web
+      traefik.http.routers.immich.entrypoints: websecure
 
   immich-microservices:
     container_name: immich_microservices

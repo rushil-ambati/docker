@@ -19,7 +19,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - ./data/prowlarr-config:/config
+      - ./data/prowlarr:/config
     networks:
       - default
       - proxy
@@ -42,7 +42,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - ./data/radarr-config:/config
+      - ./data/radarr:/config
       - ${MEDIA_ROOT}:/data
     networks:
       - default
@@ -66,7 +66,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - ./data/sonarr-config:/config
+      - ./data/sonarr:/config
       - ${MEDIA_ROOT}:/data
     networks:
       - default
@@ -90,7 +90,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - ./data/sabnzbd-config:/config
+      - ./data/sabnzbd:/config
       - ${MEDIA_ROOT}/usenet:/data/usenet
     networks:
       - default
@@ -116,7 +116,7 @@ services:
       - WEBUI_PORT=8081
       - TORRENTING_PORT=6881
     volumes:
-      - ./data/qbittorrent-config:/config
+      - ./data/qbittorrent:/config
       - ${MEDIA_ROOT}/torrents:/data/torrents
     networks:
       - default
@@ -140,7 +140,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - ./data/overseerr-config:/config
+      - ./data/overseerr:/config
     networks:
       - default
       - proxy

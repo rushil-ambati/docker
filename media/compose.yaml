@@ -26,11 +26,14 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.prowlarr.middlewares: redirect-https@file
       traefik.http.routers.prowlarr.rule: Host(`$PROWLARR_DOMAIN`)
       traefik.http.routers.prowlarr.entrypoints: websecure
       traefik.http.routers.prowlarr.tls: true
       traefik.http.services.prowlarr.loadbalancer.server.port: 9696
+      traefik.http.routers.prowlarr.middlewares: authentik@docker
+      traefik.http.routers.prowlarr-auth.rule: Host(`$PROWLARR_DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.prowlarr-auth.entrypoints: websecure
+      traefik.http.routers.prowlarr-auth.service: authentik
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -47,11 +50,14 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.radarr.middlewares: redirect-https@file
       traefik.http.routers.radarr.rule: Host(`$RADARR_DOMAIN`)
       traefik.http.routers.radarr.entrypoints: websecure
       traefik.http.routers.radarr.tls: true
       traefik.http.services.radarr.loadbalancer.server.port: 7878
+      traefik.http.routers.radarr.middlewares: authentik@docker
+      traefik.http.routers.radarr-auth.rule: Host(`$RADARR_DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.radarr-auth.entrypoints: websecure
+      traefik.http.routers.radarr-auth.service: authentik
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -68,11 +74,14 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.sonarr.middlewares: redirect-https@file
       traefik.http.routers.sonarr.rule: Host(`$SONARR_DOMAIN`)
       traefik.http.routers.sonarr.entrypoints: websecure
       traefik.http.routers.sonarr.tls: true
       traefik.http.services.sonarr.loadbalancer.server.port: 8989
+      traefik.http.routers.sonarr.middlewares: authentik@docker
+      traefik.http.routers.sonarr-auth.rule: Host(`$SONARR_DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.sonarr-auth.entrypoints: websecure
+      traefik.http.routers.sonarr-auth.service: authentik
 
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:latest
@@ -89,11 +98,14 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.sabnzbd.middlewares: redirect-https@file
       traefik.http.routers.sabnzbd.rule: Host(`$SABNZBD_DOMAIN`)
       traefik.http.routers.sabnzbd.entrypoints: websecure
       traefik.http.routers.sabnzbd.tls: true
       traefik.http.services.sabnzbd.loadbalancer.server.port: 8080
+      traefik.http.routers.sabnzbd.middlewares: authentik@docker
+      traefik.http.routers.sabnzbd-auth.rule: Host(`$SABNZBD_DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.sabnzbd-auth.entrypoints: websecure
+      traefik.http.routers.sabnzbd-auth.service: authentik
 
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
@@ -112,11 +124,14 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.qbittorrent.middlewares: redirect-https@file
       traefik.http.routers.qbittorrent.rule: Host(`$QBITTORRENT_DOMAIN`)
       traefik.http.routers.qbittorrent.entrypoints: websecure
       traefik.http.routers.qbittorrent.tls: true
       traefik.http.services.qbittorrent.loadbalancer.server.port: 8081
+      traefik.http.routers.qbittorrent.middlewares: authentik@docker
+      traefik.http.routers.qbittorrent-auth.rule: Host(`$QBITTORRENT_DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.qbittorrent-auth.entrypoints: websecure
+      traefik.http.routers.qbittorrent-auth.service: authentik
 
   overseerr:
     image: lscr.io/linuxserver/overseerr:latest

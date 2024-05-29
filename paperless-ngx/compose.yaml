@@ -51,7 +51,6 @@ services:
       PAPERLESS_SOCIALACCOUNT_PROVIDERS: ${PAPERLESS_SOCIALACCOUNT_PROVIDERS}
     labels:
       traefik.enable: true
-      traefik.http.routers.paperless.middlewares: redirect-https@file
       traefik.http.routers.paperless.rule: Host(`$PAPERLESS_DOMAIN`)
       traefik.http.routers.paperless.entrypoints: websecure
       traefik.http.routers.paperless.tls: true

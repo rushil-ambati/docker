@@ -3,7 +3,10 @@ http:
     service:
       entryPoints:
         - websecure
-      rule: Host(`service.local.example.com`)
+      rule: Host(`service.local.example.com`) || Host(`service`)
+      middlewares:
+        - unqualified-redirect
+        - authentik@docker
       service: service
     adguard-auth:
       entryPoints:
@@ -17,3 +20,10 @@ http:
         servers:
           - url: https://X.X.X.X:YYYY
         passHostHeader: true
+
+  middlewares:
+    unqualified-redirect:
+      redirectRegex:
+        regex: ^https://([^/.]+)/(.*)
+        replacement: https://${1}.local.example.com/${2}
+        permanent: true

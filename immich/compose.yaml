@@ -25,7 +25,7 @@ services:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.routers.immich.rule: Host(`$IMMICH_DOMAIN`)
+      traefik.http.routers.immich.rule: Host(`photos.$DOMAIN`)
       traefik.http.routers.immich.entrypoints: websecure
 
   immich-microservices:

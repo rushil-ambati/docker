@@ -15,11 +15,11 @@ services:
       - ./data:/data
 
     environment:
-      DOMAIN: https://${VAULTWARDEN_DOMAIN}
+      DOMAIN: https://pass.${DOMAIN}
 
     labels:
       traefik.enable: true
-      traefik.http.routers.vaultwarden.rule: Host(`$VAULTWARDEN_DOMAIN`)
+      traefik.http.routers.vaultwarden.rule: Host(`pass.$DOMAIN`)
       traefik.http.routers.vaultwarden.entrypoints: websecure
       traefik.http.services.vaultwarden.loadbalancer.server.port: 80
 

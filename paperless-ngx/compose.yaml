@@ -44,14 +44,14 @@ services:
       USERMAP_UID: 1000
       USERMAP_GID: 1000
       PAPERLESS_OCR_LANGUAGE: eng
-      PAPERLESS_URL: "https://${PAPERLESS_DOMAIN}"
-      PAPERLESS_ALLOWED_HOSTS: "${PAPERLESS_DOMAIN},localhost"
+      PAPERLESS_URL: "https://documents.local.${DOMAIN}"
+      PAPERLESS_ALLOWED_HOSTS: "documents.local${DOMAIN},localhost"
       PAPERLESS_DISABLE_REGULAR_LOGIN: ${PAPERLESS_DISABLE_REGULAR_LOGIN}
       PAPERLESS_APPS: ${PAPERLESS_APPS}
       PAPERLESS_SOCIALACCOUNT_PROVIDERS: ${PAPERLESS_SOCIALACCOUNT_PROVIDERS}
     labels:
       traefik.enable: true
-      traefik.http.routers.paperless.rule: Host(`$PAPERLESS_DOMAIN`)
+      traefik.http.routers.paperless.rule: Host(`documents.local.$DOMAIN`) || Host(`documents`)
       traefik.http.routers.paperless.entrypoints: websecure
       traefik.http.routers.paperless.tls: true
       traefik.http.services.paperless.loadbalancer.server.port: 8000

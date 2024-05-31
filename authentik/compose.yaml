@@ -53,7 +53,7 @@ services:
       - redis
     labels:
       traefik.enable: true
-      traefik.http.routers.authentik.rule: Host(`$AUTHENTIK_DOMAIN`)
+      traefik.http.routers.authentik.rule: Host(`auth.$DOMAIN`)
       traefik.http.routers.authentik.entrypoints: websecure
       traefik.http.services.authentik.loadbalancer.server.port: 9000
       traefik.http.middlewares.authentik.forwardauth.address: http://authentik:9000/outpost.goauthentik.io/auth/traefik

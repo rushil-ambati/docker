@@ -3,7 +3,7 @@ http:
     service:
       entryPoints:
         - websecure
-      rule: Host(`service.local.example.com`) || Host(`service`)
+      rule: Host(`service.local.example.com`)
       middlewares:
         - unqualified-redirect
         - authentik@docker

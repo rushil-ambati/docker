@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.prowlarr.rule: Host(`indexers.local.$DOMAIN`) || Host(`indexers`)
+      traefik.http.routers.prowlarr.rule: Host(`indexers.local.$DOMAIN`)
       traefik.http.routers.prowlarr.entrypoints: websecure
       traefik.http.routers.prowlarr.tls: true
       traefik.http.services.prowlarr.loadbalancer.server.port: 9696
@@ -50,7 +50,7 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.radarr.rule: Host(`movies.local.$DOMAIN`) || Host(`movies`)
+      traefik.http.routers.radarr.rule: Host(`movies.local.$DOMAIN`)
       traefik.http.routers.radarr.entrypoints: websecure
       traefik.http.routers.radarr.tls: true
       traefik.http.services.radarr.loadbalancer.server.port: 7878
@@ -74,7 +74,7 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.sonarr.rule: Host(`tv.local.$DOMAIN`) || Host(`tv`)
+      traefik.http.routers.sonarr.rule: Host(`tv.local.$DOMAIN`)
       traefik.http.routers.sonarr.entrypoints: websecure
       traefik.http.routers.sonarr.tls: true
       traefik.http.services.sonarr.loadbalancer.server.port: 8989
@@ -98,7 +98,7 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.sabnzbd.rule: Host(`nzb.local.$DOMAIN`) || Host(`nzb`)
+      traefik.http.routers.sabnzbd.rule: Host(`nzb.local.$DOMAIN`)
       traefik.http.routers.sabnzbd.entrypoints: websecure
       traefik.http.routers.sabnzbd.tls: true
       traefik.http.services.sabnzbd.loadbalancer.server.port: 8080
@@ -124,7 +124,7 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.qbittorrent.rule: Host(`torrent.local.$DOMAIN`) || Host(`torrent`)
+      traefik.http.routers.qbittorrent.rule: Host(`torrent.local.$DOMAIN`)
       traefik.http.routers.qbittorrent.entrypoints: websecure
       traefik.http.routers.qbittorrent.tls: true
       traefik.http.services.qbittorrent.loadbalancer.server.port: 8081

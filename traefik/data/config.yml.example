@@ -20,10 +20,3 @@ http:
         servers:
           - url: https://X.X.X.X:YYYY
         passHostHeader: true
-
-  middlewares:
-    unqualified-redirect:
-      redirectRegex:
-        regex: ^https://([^/.]+)/(.*)
-        replacement: https://${1}.local.example.com/${2}
-        permanent: true

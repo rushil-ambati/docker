@@ -35,8 +35,6 @@ entryPoints:
             sans:
               - "*.example.com"
               - "*.local.example.com"
-      middlewares:
-        - unqualified-redirect@file
 
 serversTransport:
   insecureSkipVerify: true

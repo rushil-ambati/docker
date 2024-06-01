@@ -51,7 +51,7 @@ services:
       PAPERLESS_SOCIALACCOUNT_PROVIDERS: ${PAPERLESS_SOCIALACCOUNT_PROVIDERS}
     labels:
       traefik.enable: true
-      traefik.http.routers.paperless.rule: Host(`documents.local.$DOMAIN`) || Host(`documents`)
+      traefik.http.routers.paperless.rule: Host(`documents.local.$DOMAIN`)
       traefik.http.routers.paperless.entrypoints: websecure
       traefik.http.routers.paperless.tls: true
       traefik.http.services.paperless.loadbalancer.server.port: 8000

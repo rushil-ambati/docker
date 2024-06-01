@@ -5,7 +5,6 @@ http:
         - websecure
       rule: Host(`service.local.example.com`)
       middlewares:
-        - unqualified-redirect
         - authentik@docker
       service: service
     adguard-auth:

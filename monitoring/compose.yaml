@@ -1,0 +1,105 @@
+services:
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    volumes:
+      - ./data/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ${DATA_DIR}/prometheus:/prometheus
+    networks:
+      - default
+      - metrics
+      - proxy
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.prometheus.rule: Host(`prometheus.local.$DOMAIN`)
+      traefik.http.routers.prometheus.entrypoints: websecure
+      traefik.http.routers.prometheus.tls: true
+      traefik.http.services.prometheus.loadbalancer.server.port: 9090
+      traefik.http.routers.prometheus.middlewares: authentik@docker
+      traefik.http.routers.prometheus-auth.rule: Host(`prometheus.local.$DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.prometheus-auth.entrypoints: websecure
+      traefik.http.routers.prometheus-auth.service: authentik
+
+  node_exporter:
+    container_name: node_exporter
+    image: quay.io/prometheus/node-exporter:latest
+    command:
+      - "--path.rootfs=/host"
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - "/:/host:ro,rslave"
+
+  cadvisor:
+    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    privileged: true
+    devices:
+      - /dev/kmsg
+    networks:
+      - default
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.http.routers.cadvisor.rule: Host(`cadvisor.local.$DOMAIN`)
+      traefik.http.routers.cadvisor.entrypoints: websecure
+      traefik.http.routers.cadvisor.tls: true
+      traefik.http.services.cadvisor.loadbalancer.server.port: 8080
+      traefik.http.routers.cadvisor.middlewares: authentik@docker
+      traefik.http.routers.cadvisor-auth.rule: Host(`cadvisor.local.$DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.cadvisor-auth.entrypoints: websecure
+      traefik.http.routers.cadvisor-auth.service: authentik
+
+  adguard_exporter:
+    container_name: adguard_exporter
+    image: ebrianne/adguard-exporter
+    restart: unless-stopped
+    environment:
+      adguard_hostname: 192.168.1.102
+      interval: 15s
+      log_limit: 10000
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    user: "1000"
+    restart: unless-stopped
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    networks:
+      - default
+      - proxy
+    environment:
+      GF_SERVER_ROOT_URL: https://metrics.local.$DOMAIN
+      GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
+      GF_AUTH_GENERIC_OAUTH_NAME: "authentik"
+      GF_AUTH_GENERIC_OAUTH_CLIENT_ID: ${GF_AUTH_GENERIC_OAUTH_CLIENT_ID}
+      GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ${GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
+      GF_AUTH_GENERIC_OAUTH_SCOPES: "openid profile email"
+      GF_AUTH_GENERIC_OAUTH_AUTH_URL: "https://auth.$DOMAIN/application/o/authorize/"
+      GF_AUTH_GENERIC_OAUTH_TOKEN_URL: "https://auth.$DOMAIN/application/o/token/"
+      GF_AUTH_GENERIC_OAUTH_API_URL: "https://auth.$DOMAIN/application/o/userinfo/"
+      GF_AUTH_SIGNOUT_REDIRECT_URL: "https://auth.$DOMAIN/application/o/grafana/end-session/"
+      GF_AUTH_OAUTH_AUTO_LOGIN: "true"
+      GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups, 'authentik Admins') && 'Admin' || 'Viewer'"
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.grafana.rule: Host(`metrics.local.$DOMAIN`)
+      traefik.http.routers.grafana.entrypoints: websecure
+      traefik.http.routers.grafana.tls: true
+      traefik.http.services.grafana.loadbalancer.server.port: 3000
+
+networks:
+  metrics:
+    name: metrics
+  proxy:
+    external: true

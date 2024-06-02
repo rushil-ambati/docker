@@ -122,14 +122,25 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.sabnzbd.rule: Host(`nzb.local.$DOMAIN`)
+      traefik.http.routers.sabnzbd.rule: Host(`usenet.local.$DOMAIN`)
       traefik.http.routers.sabnzbd.entrypoints: websecure
       traefik.http.routers.sabnzbd.tls: true
       traefik.http.services.sabnzbd.loadbalancer.server.port: 8080
       traefik.http.routers.sabnzbd.middlewares: authentik@docker
-      traefik.http.routers.sabnzbd-auth.rule: Host(`nzb.local.$DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.sabnzbd-auth.rule: Host(`usenet.local.$DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
       traefik.http.routers.sabnzbd-auth.entrypoints: websecure
       traefik.http.routers.sabnzbd-auth.service: authentik
+
+  sabnzbd_exporter:
+    container_name: sabnzbd_exporter
+    image: msroest/sabnzbd_exporter
+    restart: unless-stopped
+    networks:
+      - default
+      - metrics
+    environment:
+      SABNZBD_BASEURL: http://sabnzbd:8080
+      SABNZBD_APIKEY: ${SABNZBD_API_KEY}
 
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
@@ -157,6 +168,17 @@ services:
       traefik.http.routers.qbittorrent-auth.entrypoints: websecure
       traefik.http.routers.qbittorrent-auth.service: authentik
 
+  qbittorrent_exporter:
+    container_name: qbittorrent_exporter
+    image: ghcr.io/esanchezm/prometheus-qbittorrent-exporter
+    restart: unless-stopped
+    networks:
+      - default
+      - metrics
+    environment:
+      QBITTORRENT_PORT: 8081
+      QBITTORRENT_HOST: qbittorrent
+
   overseerr:
     image: lscr.io/linuxserver/overseerr:latest
     container_name: overseerr
@@ -177,4 +199,6 @@ services:
 
 networks:
   proxy:
+    external: true
+  metrics:
     external: true

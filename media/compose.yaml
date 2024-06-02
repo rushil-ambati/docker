@@ -83,6 +83,30 @@ services:
       traefik.http.routers.sonarr-auth.entrypoints: websecure
       traefik.http.routers.sonarr-auth.service: authentik
 
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./data/bazarr:/config
+      - ${MEDIA_ROOT}:/data
+    networks:
+      - default
+      - proxy
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.bazarr.rule: Host(`subtitles.local.$DOMAIN`)
+      traefik.http.routers.bazarr.entrypoints: websecure
+      traefik.http.routers.bazarr.tls: true
+      traefik.http.services.bazarr.loadbalancer.server.port: 6767
+      traefik.http.routers.bazarr.middlewares: authentik@docker
+      traefik.http.routers.bazarr-auth.rule: Host(`subtitles.local.$DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.bazarr-auth.entrypoints: websecure
+      traefik.http.routers.bazarr-auth.service: authentik
+
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:latest
     container_name: sabnzbd

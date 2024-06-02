@@ -7,7 +7,7 @@ http:
       middlewares:
         - authentik@docker
       service: service
-    adguard-auth:
+    service-auth:
       entryPoints:
         - websecure
       rule: HostRegexp(`service.local.rushil.uk`) && PathPrefix(`/outpost.goauthentik.io/`)

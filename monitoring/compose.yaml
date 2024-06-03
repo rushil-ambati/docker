@@ -3,11 +3,10 @@ services:
     container_name: prometheus
     image: prom/prometheus
     volumes:
-      - ./data/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ${DATA_DIR}/prometheus:/prometheus
     networks:
-      - default
-      - metrics
+      - monitoring
       - proxy
     restart: unless-stopped
     labels:
@@ -30,6 +29,8 @@ services:
     restart: unless-stopped
     volumes:
       - "/:/host:ro,rslave"
+    networks:
+      - monitoring
 
   cadvisor:
     container_name: cadvisor
@@ -45,7 +46,7 @@ services:
     devices:
       - /dev/kmsg
     networks:
-      - default
+      - monitoring
       - proxy
     labels:
       traefik.enable: true
@@ -66,6 +67,8 @@ services:
       adguard_hostname: 192.168.1.102
       interval: 15s
       log_limit: 10000
+    networks:
+      - monitoring
 
   grafana:
     container_name: grafana
@@ -75,7 +78,7 @@ services:
     volumes:
       - ./data/grafana:/var/lib/grafana
     networks:
-      - default
+      - monitoring
       - proxy
     environment:
       GF_SERVER_ROOT_URL: https://metrics.local.$DOMAIN
@@ -90,7 +93,6 @@ services:
       GF_AUTH_SIGNOUT_REDIRECT_URL: "https://auth.$DOMAIN/application/o/grafana/end-session/"
       GF_AUTH_OAUTH_AUTO_LOGIN: "true"
       GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups, 'authentik Admins') && 'Admin' || 'Viewer'"
-
     labels:
       traefik.enable: true
       traefik.http.routers.grafana.rule: Host(`metrics.local.$DOMAIN`)
@@ -99,7 +101,7 @@ services:
       traefik.http.services.grafana.loadbalancer.server.port: 3000
 
 networks:
-  metrics:
-    name: metrics
+  monitoring:
+    name: monitoring
   proxy:
     external: true

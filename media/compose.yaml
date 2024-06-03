@@ -137,7 +137,7 @@ services:
     restart: unless-stopped
     networks:
       - default
-      - metrics
+      - monitoring
     environment:
       SABNZBD_BASEURL: http://sabnzbd:8080
       SABNZBD_APIKEY: ${SABNZBD_API_KEY}
@@ -174,7 +174,7 @@ services:
     restart: unless-stopped
     networks:
       - default
-      - metrics
+      - monitoring
     environment:
       QBITTORRENT_PORT: 8081
       QBITTORRENT_HOST: qbittorrent
@@ -219,5 +219,5 @@ services:
 networks:
   proxy:
     external: true
-  metrics:
+  monitoring:
     external: true

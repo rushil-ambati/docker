@@ -70,6 +70,28 @@ services:
     networks:
       - monitoring
 
+  loki:
+    container_name: loki
+    image: grafana/loki
+    restart: unless-stopped
+    command: -config.file=/mnt/config/loki-config.yaml
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./data/loki:/mnt/config/
+    networks:
+      - monitoring
+
+  promtail:
+    container_name: promtail
+    image: grafana/promtail
+    restart: unless-stopped
+    command: -config.file=/mnt/config/promtail-config.yaml
+    volumes:
+      - ./data/promtail:/mnt/config/
+    networks:
+      - monitoring
+
   grafana:
     container_name: grafana
     image: grafana/grafana
@@ -91,7 +113,7 @@ services:
       GF_AUTH_GENERIC_OAUTH_TOKEN_URL: "https://auth.$DOMAIN/application/o/token/"
       GF_AUTH_GENERIC_OAUTH_API_URL: "https://auth.$DOMAIN/application/o/userinfo/"
       GF_AUTH_SIGNOUT_REDIRECT_URL: "https://auth.$DOMAIN/application/o/grafana/end-session/"
-      GF_AUTH_OAUTH_AUTO_LOGIN: "true"
+      GF_AUTH_GENERIC_OAUTH_AUTO_LOGIN: "true"
       GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups, 'authentik Admins') && 'Admin' || 'Viewer'"
     labels:
       traefik.enable: true

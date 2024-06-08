@@ -48,6 +48,7 @@ services:
     networks:
       - default
       - proxy
+      - monitoring
     depends_on:
       - postgresql
       - redis
@@ -89,4 +90,6 @@ services:
 
 networks:
   proxy:
+    external: true
+  monitoring:
     external: true

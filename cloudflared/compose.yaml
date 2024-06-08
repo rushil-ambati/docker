@@ -10,10 +10,13 @@ services:
 
     networks:
       - proxy
+      - monitoring
 
     command:
       - tunnel
       - --no-autoupdate
+      - --metrics
+      - cloudflared:60123
       - run
 
     environment:
@@ -22,3 +25,5 @@ services:
 networks:
   proxy:
     name: proxy
+  monitoring:
+    external: true

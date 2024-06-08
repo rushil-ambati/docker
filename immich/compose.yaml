@@ -23,6 +23,7 @@ services:
     networks:
       - default
       - proxy
+      - monitoring
     labels:
       traefik.enable: true
       traefik.http.routers.immich.rule: Host(`photos.$DOMAIN`)
@@ -38,6 +39,9 @@ services:
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - default
+      - monitoring
     env_file:
       - .env
     depends_on:
@@ -94,4 +98,6 @@ services:
 
 networks:
   proxy:
+    external: true
+  monitoring:
     external: true

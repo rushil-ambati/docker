@@ -35,6 +35,20 @@ services:
       traefik.http.routers.prowlarr-auth.entrypoints: websecure
       traefik.http.routers.prowlarr-auth.service: authentik
 
+  prowlarr_exporter:
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    container_name: prowlarr_exporter
+    command: ["prowlarr"]
+    environment:
+      PORT: 9710
+      URL: "http://prowlarr:9696"
+      PROWLARR_BACKFILL: "true"
+      APIKEY: ${PROWLARR_API_KEY}
+    networks:
+      - default
+      - monitoring
+    restart: unless-stopped
+
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
@@ -58,6 +72,19 @@ services:
       traefik.http.routers.radarr-auth.rule: Host(`movies.local.$DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
       traefik.http.routers.radarr-auth.entrypoints: websecure
       traefik.http.routers.radarr-auth.service: authentik
+
+  radarr-exporter:
+    container_name: radarr_exporter
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    command: ["radarr"]
+    environment:
+      PORT: 9708
+      URL: "http://radarr:7878"
+      APIKEY: ${RADARR_API_KEY}
+    networks:
+      - default
+      - monitoring
+    restart: unless-stopped
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -83,6 +110,19 @@ services:
       traefik.http.routers.sonarr-auth.entrypoints: websecure
       traefik.http.routers.sonarr-auth.service: authentik
 
+  sonarr-exporter:
+    container_name: sonarr_exporter
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    command: ["sonarr"]
+    environment:
+      PORT: 9709
+      URL: "http://sonarr:8989"
+      APIKEY: ${SONARR_API_KEY}
+    networks:
+      - default
+      - monitoring
+    restart: unless-stopped
+
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
@@ -106,6 +146,19 @@ services:
       traefik.http.routers.bazarr-auth.rule: Host(`subtitles.local.$DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
       traefik.http.routers.bazarr-auth.entrypoints: websecure
       traefik.http.routers.bazarr-auth.service: authentik
+
+  bazarr-exporter:
+    container_name: bazarr_exporter
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    command: ["bazarr"]
+    environment:
+      PORT: 9712
+      URL: "http://bazarr:6767"
+      APIKEY: ${BAZARR_API_KEY}
+    networks:
+      - default
+      - monitoring
+    restart: unless-stopped
 
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:latest

@@ -22,6 +22,10 @@ services:
       traefik.http.routers.uptime-kuma.rule: Host(`status.local.$DOMAIN`)
       traefik.http.routers.uptime-kuma.entrypoints: websecure
       traefik.http.routers.uptime-kuma.tls: true
+      traefik.http.routers.uptime-kuma.middlewares: authentik@docker
+      traefik.http.routers.uptime-kuma-auth.rule: Host(`status.local.$DOMAIN`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.uptime-kuma-auth.entrypoints: websecure
+      traefik.http.routers.uptime-kuma-auth.service: authentik
 
 networks:
   proxy:
